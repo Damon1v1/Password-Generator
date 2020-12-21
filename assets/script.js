@@ -63,13 +63,13 @@ function getPasswordOptions() {
     return;
   }
   //asks user to confirm using capital letters
-  var userCap = confirm("Capital letters:");
+  var userCap = confirm("Press OK to confirm capital letters:");
   //asks user to confirm using lowercase letters 
-  var userLower = confirm("Lowercase letters:");
+  var userLower = confirm("Press OK to confirm lowercase letters:");
   //asks user to confirm using numbers
-  var userNum = confirm("Numbers:");
+  var userNum = confirm("Press OK to confrim numbers:");
   //asks user to confirm using special characters
-  var userSpecial = confirm("Special characters:");
+  var userSpecial = confirm("Press OK to confirm special characters:");
   //stores all the selected options
   var passwordOptions = {
     userLength: userLength,
@@ -82,6 +82,7 @@ function getPasswordOptions() {
   return passwordOptions;
 }
 
+//function to get a random element from an array
 function getRandom(arr) {
   var randIndex = Math.floor(Math.random() * arr.length);
   var randElement = arr[randIndex];
@@ -89,13 +90,18 @@ function getRandom(arr) {
   return randElement;
 }
 
+
 function generatePassword() {
   //runs getPasswordOptions function and stores those results in the options variable
   var options = getPasswordOptions();
+  //etsablishing empty arrays to hold random characters
   passwordFinal = [];
   possibleChar = [];
   absoluteChar = [];
 
+
+  //conditional statements that check the users confirms and adds those
+  //characters to the arrays of absolute characters and possible characters
   if (options.userNum) {
     possibleChar = possibleChar.concat(numberChar);
     absoluteChar.push(getRandom(numberChar));
@@ -116,23 +122,28 @@ function generatePassword() {
     absoluteChar.push(getRandom(upperChar));
   }
 
+  //for loop that randomly fills the final password array with possible characters according 
+  //to the users desired password length
   for (var i = 0; i < options.userLength; i++) {
     var randomChar = getRandom(possibleChar);
 
     passwordFinal.push(randomChar);
   }
 
+  //for loop that mixes in guaranteed characters the user confirmed
   for (var i = 0; i < absoluteChar.length; i++) {
     passwordFinal[i] = absoluteChar[i];
   }
 
+  //joins all the characters in the passwordFinal array into one unspaced string
   return passwordFinal.join('');
 
 }
 
-
+//establishes reference to #generate element in 'index.html'
 var generateBtn = document.querySelector('#generate');
 
+//function to write password to the #passwird element
 function writePassword() {
   var password = generatePassword();
   var passwordText = document.querySelector('#password');
@@ -140,5 +151,6 @@ function writePassword() {
   passwordText.value = password;
 }
 
-
+//adds event listener to run the writePassword function on when the 
+//button is clicked on the webpage
 generateBtn.addEventListener("click", writePassword);
